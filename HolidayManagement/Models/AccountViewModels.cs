@@ -65,6 +65,16 @@ namespace HolidayManagement.Models
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "First Name")]
+        [RegularExpression("^([A-Za-z]+['.]?[ ]?|[A-Za-z]+['-]?)+$", ErrorMessage = "Only letters '.- and spaces")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last Name")]
+        [RegularExpression("^([A-Za-z]+['.]?[ ]?|[A-Za-z]+['-]?)+$", ErrorMessage = "Only letters '.- and spaces")]
+        public string LastName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

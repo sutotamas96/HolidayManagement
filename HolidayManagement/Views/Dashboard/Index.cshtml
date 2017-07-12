@@ -1,0 +1,22 @@
+﻿@model HolidayManagement.Models.DashboardViewModel
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<!-- kukac.Model.userL[0].LastName example-->
+
+<h2 style="text-align: center"> Dashboard </h2><br /><br />
+<div class="panel panel-body">
+        <div class="col-md-3">
+            @Html.Partial("_TopMenu")
+        </div>
+    <div class="col-md-9">
+        @Html.Partial("_Top2Menu")
+    </div>
+</div><!--
+<span data-bind="text: test"></span>-->
+
+<script type="text/javascript" src="~/Scripts/Dashboard/DashboardModel.js"></script>
+<script type="text/javascript">
+    InitializeDashboardModel(@Html.Raw(Json.Encode(Model)));
+</script>
