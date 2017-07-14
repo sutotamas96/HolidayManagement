@@ -288,6 +288,7 @@
     <Content Include="Views\Dashboard\_Settings.cshtml" />
     <Content Include="Views\Dashboard\_TopMenu.cshtml" />
     <Content Include="Views\Dashboard\_Top2Menu.cshtml" />
+    <Content Include="Views\Dashboard\_FormCreate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

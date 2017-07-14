@@ -14,7 +14,18 @@ namespace HolidayManagement.Repository
 
         public List<Team> GetTeams()
         {
-            return DbContext.Teams.ToList();
-        }        
+            var teams = DbContext.Teams.ToList();
+
+            foreach (var team in teams)
+            {
+                if (team.Users != null)
+                    foreach (var user in team.Users)
+                        user.Team = null;
+            }
+
+            return teams;
+
+
+        }
     }
 }

@@ -12,4 +12,6 @@ namespace HolidayManagement.Repository.Models
         
         public virtual ICollection<UserDetails> Users { get; set; }
     }
+
+
 }
