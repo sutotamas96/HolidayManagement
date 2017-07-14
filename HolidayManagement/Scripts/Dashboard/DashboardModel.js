@@ -1,6 +1,7 @@
 ﻿function DashboardModel() {
     var _self = this;
 
+    this.butt = ko.observable();
     this.test = ko.observable();
     this.userArray = ko.observableArray();
     this.teamArray = ko.observableArray();
@@ -19,9 +20,16 @@
         _self.userArray(userArray2);
         _self.teamArray(teamArray2);
     };
+    /*
+    this.updateManageUser = function (user) {
+        _self.manageUser.id(user.id());
+
+    };*/
 
 
-    this.createUser = function () {       
+
+    this.createUser = function () {
+        
         $.ajax({ 
             type: "POST",
             url: "/Account/CreateUser",         
@@ -66,3 +74,18 @@ function InitializeDashboardModel(data) {
     ko.applyBindings(DashboardModel.instance);
 
 }
+
+function hidee() {
+    $('#fejlec').text('Create new user');
+    $("#edit").hide();
+    $("#createb").show();
+    
+}
+
+function hidec() {
+    $('#fejlec').text('Edit user');
+    $("#createb").hide();
+    $("#edit").show();
+    
+} 
+

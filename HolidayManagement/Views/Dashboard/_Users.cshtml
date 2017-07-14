@@ -1,10 +1,11 @@
 ﻿
 <h2 style="display: inline; margin-right:20px;">Users</h2>
-<button type="button" data-bind="value: 1" data-toggle="modal" data-target="#myModal" style="heigth: 15px;">Create new user</button>
+<button type="button" data-bind="click: hidee" data-toggle="modal" data-target="#myModal" style="heigth: 15px;">Create new user</button>
 <div id="tabla">
     <table class="table table-hover">
         <thead>
             <tr>
+                <th>ID</th>
                 <th>Firstname</th>
                 <th>Lastname</th>
                 <th>Email</th>
@@ -15,12 +16,13 @@
         </thead>
         <tbody data-bind="foreach: userArray">
             <tr>
+                <td><span data-bind="text: id"></span></td>
                 <td><span data-bind="text: FirstName"></span></td>
                 <td><span data-bind="text: LastName"></span></td>
                 <td><span data-bind="text: Email"></span></td>
                 <td><span data-bind="text: HireDate"></span></td>
                 <td><span data-bind="text: MaxDays"></span></td>
-                <td><button data-bind="value: 2" type="button" data-toggle="modal" data-target="#myModal" style="heigth: 15px;">Edit</button></td>
+                <td><button  data-bind="click: $root.hidec.bind()" type="button" data-toggle="modal" data-target="#myModal" style="heigth: 15px;">Edit</button></td>
             </tr>
 
 
@@ -28,5 +30,5 @@
     </table>
 </div>
 @*<div data-bind="with: manageUser">*@
-   </span> @Html.Partial("_FormCreate")
+   </span> @Html.Partial("_FormCreate")</span>
 @*</div>*@
