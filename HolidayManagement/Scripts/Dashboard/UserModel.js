@@ -5,6 +5,7 @@
     this.LastName = ko.observable();
     this.HireDate = ko.observable();
     this.MaxDays = ko.observable();
+    this.TeamId = ko.observable();
 
     if (data != null) {
         if (data.AspNetUser != null) {
@@ -14,6 +15,7 @@
         _self.LastName(data.LastName);
         _self.HireDate(data.HireDate);
         _self.MaxDays(data.MaxDays);
+        _self.TeamId(data.TeamId);
     }
 
 

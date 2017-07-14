@@ -6,7 +6,6 @@
     this.teamArray = ko.observableArray();
     this.manageUser = new UserModel();
     this.errorMessage = ko.observable();
-    this.selectedTeamID = ko.observable();
     this.initialize = function (data) {
         _self.test(data.Test);
         userArray2 = _.map(data.userL, function (user, index) {
@@ -34,17 +33,25 @@
                 },
                 HireDate: _self.manageUser.HireDate(),
                 MaxDays: _self.manageUser.MaxDays(),
-                TeamId: _self.selectedTeamID()
+                TeamId: _self.manageUser.TeamId()
             },
             success: function (data) {
                 if (data.successed) {
                     $("#myModal").modal("hide");
-                    location.reload();
+                    var temp = new UserModel(data.newUser)
+                    _self.userArray.push(temp);
+                    _self.manageUser.TeamId(1);
+                    _self.manageUser.Email("");
+                    _self.manageUser.FirstName("");
+                    _self.manageUser.LastName("");
+                    _self.manageUser.HireDate("");
+                    _self.manageUser.MaxDays("");
+                    
+                    _self.errorMessage("");
                 }
                 else {
                     _self.errorMessage ( data.messages) ;
-                    document.getElementById('error').innerHTML = _self.errorMessage();
-                    document.getElementById('error').style.visibility = 'visible';
+                   
                 }
             }
         });
