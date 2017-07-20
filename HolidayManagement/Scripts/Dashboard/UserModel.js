@@ -6,6 +6,7 @@
     this.LastName = ko.observable();
     this.HireDate = ko.observable();
     this.MaxDays = ko.observable();
+    this.UserID = ko.observable();
     this.TeamId = ko.observable();
 
     if (data != null) {
@@ -18,6 +19,7 @@
         _self.HireDate(data.HireDate);
         _self.MaxDays(data.MaxDays);
         _self.TeamId(data.TeamId);
+        _self.UserID(data.UserID);
     }
 
 

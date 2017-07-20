@@ -1,2 +1,62 @@
-﻿
-<h2>Calendar</h2>
+﻿<style>
+    #previous {
+        display: inline;
+        float: left;
+    }
+
+    #next {
+        display: inline;
+        float: right;
+    }
+</style>
+<h2 data-bind="text: currentYear" style="display: inline; margin-right:20px; margin-left: 40%;"></h2><br /><br />
+<h2 data-bind="text: names[currentMonth()]" style="display: inline; margin-left: 38%;"></h2><br /><br />
+
+<div class="form-group">
+    <div id="tabla">
+        <table class="table table-hover">
+            <thead>
+                <tr style="text-align: center; border:1.5px solid green; background-color: lightcyan;">
+                    <th>Day</th>
+                    <th>DayName</th>
+                    <th>Free</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: calendar().monthdays">
+                <tr style="text-align:center; border: 2px solid blue; background-color: aliceblue">
+                    <td><span data-bind="text: ID"></span></td>
+                    <td><span data-bind="text: name"></span></td>
+                    <td><span data-bind="text: isFreeDay"></span></td>
+                    <td><span data-bind="text: description"></span></td>
+                    <!--$root.OpenEditUser-->
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    @*<div data-bind="with: manageUser">*@
+    @*</div>*@
+</div>
+<div style="float:left">
+    <button type="button" data-bind="click: previousm" >Previous</button>
+</div>
+<div style="float:right">
+    <button type="button" data-bind="click: nextm" style="float:left">Next</button>
+</div>
+<br />
+@if ((User.IsInRole("Admin")) | (User.IsInRole("HR")))
+{
+<div style="margin-left: 30%">
+    <div class="form-group">
+        <label for="SearchID">SearchID: </label>
+        <div >
+            <input data-bind="value: searchUser" id="SearchID" name="SearchID" type="text" placeholder="Enter your SearchID" class="form-control input-md">
+            <button type="button" data-bind="click: searchydi" style="float:left">Search</button>
+        </div>
+    </div>
+</div>
+}
+    @*<div data-bind="with: manageUser">*@
+    @*</div>*@
+
+

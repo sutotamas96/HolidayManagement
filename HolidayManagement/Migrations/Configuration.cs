@@ -1,5 +1,8 @@
 namespace HolidayManagement.Migrations
 {
+    using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
+    using Repository;
     using Repository.Models;
     using System;
     using System.Collections.Generic;
@@ -27,7 +30,13 @@ namespace HolidayManagement.Migrations
 
             teams.ForEach(t => context.Teams.Add(t));
             context.SaveChanges();
-
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new HolidayManagementContext()));
+            roleManager.Create(new IdentityRole()
+            { Name = "Admin" });
+            roleManager.Create(new IdentityRole()
+            { Name = "HR" });
+            roleManager.Create(new IdentityRole()
+            { Name = "Employee" });
             var bankHolidays = new List<BankHoliday> {
                   new BankHoliday { Description="1 January", Day=1, Month=1},
                   new BankHoliday { Description="2 January", Day=2, Month=1},

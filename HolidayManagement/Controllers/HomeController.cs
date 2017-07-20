@@ -10,7 +10,7 @@ namespace HolidayManagement.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return RedirectToAction("Index", "Dashboard");
         }
     }
 }

@@ -64,11 +64,13 @@ namespace HolidayManagement.Models
 
     public class RegisterViewModel
     {
+        //Add First Name field which is mandatory, required
         [Required]
         [Display(Name = "First Name")]
         [RegularExpression("^([A-Za-z]+['.]?[ ]?|[A-Za-z]+['-]?)+$", ErrorMessage = "Only letters '.- and spaces")]
         public string FirstName { get; set; }
 
+        //Add Last Name field which is mandatory, required
         [Required]
         [Display(Name = "Last Name")]
         [RegularExpression("^([A-Za-z]+['.]?[ ]?|[A-Za-z]+['-]?)+$", ErrorMessage = "Only letters '.- and spaces")]

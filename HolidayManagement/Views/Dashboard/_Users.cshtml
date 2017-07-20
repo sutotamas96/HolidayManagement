@@ -1,28 +1,32 @@
-﻿
-<h2 style="display: inline; margin-right:20px;">Users</h2>
-<button type="button" data-bind="click: hidee" data-toggle="modal" data-target="#myModal" style="heigth: 15px;">Create new user</button>
+﻿<h2 style="display: inline; margin-right:20px;">Users</h2>
+<button type="button" data-bind="click: hidee" data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false">Create new user</button>
 <div id="tabla">
     <table class="table table-hover">
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Firstname</th>
                 <th>Lastname</th>
                 <th>Email</th>
                 <th>HireDate</th>
                 <th>MaxDays</th>
+                <th>TeamID</th>
 
             </tr>
         </thead>
+        <!-- foreach binding to list the users into a table -->
         <tbody data-bind="foreach: userArray">
             <tr>
-                <td><span data-bind="text: id"></span></td>
                 <td><span data-bind="text: FirstName"></span></td>
                 <td><span data-bind="text: LastName"></span></td>
                 <td><span data-bind="text: Email"></span></td>
                 <td><span data-bind="text: HireDate"></span></td>
                 <td><span data-bind="text: MaxDays"></span></td>
-                <td><button  data-bind="click: $root.hidec.bind()" type="button" data-toggle="modal" data-target="#myModal" style="heigth: 15px;">Edit</button></td>
+                <td><span data-bind="text: TeamId"></span></td>
+                <!-- each users has an edit button-->
+                <!--Reuse the modal that was created for create user functionality , same manageUser property-->
+                <td><button data-bind="click: $root.OpenEditUser" data-backdrop="static" data-keyboard="false" type="button" data-toggle="modal" data-target="#myModal" >Edit</button></td>
+
+                <!--$root.OpenEditUser-->
             </tr>
 
 
@@ -30,5 +34,5 @@
     </table>
 </div>
 @*<div data-bind="with: manageUser">*@
-   </span> @Html.Partial("_FormCreate")</span>
+   <span> @Html.Partial("_FormCreate")</span>
 @*</div>*@

@@ -12,6 +12,8 @@ using HolidayManagement.Models;
 using HolidayManagement.Repository;
 using HolidayManagement.Repository.Models;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace HolidayManagement.Controllers
 {
@@ -81,6 +83,7 @@ namespace HolidayManagement.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
+                //redirect the user to the Dashboard if the sign in had succes
                 case SignInStatus.Success:
                     return RedirectToAction("Index", "Dashboard");
                 case SignInStatus.LockedOut:
@@ -145,46 +148,133 @@ namespace HolidayManagement.Controllers
             return View();
         }
 
-
-        [HttpPost]
-        public async Task<ActionResult> CreateUser(UserDetails model)
+        //EditUser action
+        public async Task<ActionResult> EditUser(UserDetails model, string ManageUserRoleID)
         {
-
-            bool successedd = false;
-            List<string> messages = new List<string>();
-
-            var user = new ApplicationUser { UserName = model.AspNetUser.Email, Email = model.AspNetUser.Email };
-            var result = await UserManager.CreateAsync(user, "Password1!");
-            HolidayManagementContext newDB = new HolidayManagementContext();          
-            if (result.Succeeded)
+            bool successedd = true;
+            List<string> messagess = new List<string>();
+            HolidayManagementContext newDB = new HolidayManagementContext();
+            var user = newDB.UserDetails.FirstOrDefault(c => c.ID == model.ID);
+            Regex reg = new Regex("^([A-Za-z]+['.]?[ ]?|[A-Za-z]+['-]?)+$", RegexOptions.Compiled);
+            if (!reg.IsMatch(model.LastName) || (model.LastName == null))
             {
-                UserDetails newUser = new UserDetails
-                {
-                    UserID = user.Id,
-                    LastName = model.LastName,
-                    FirstName = model.FirstName,
-                    HireDate = model.HireDate,
-                    MaxDays = model.MaxDays,
-                    TeamId = model.TeamId
-                };
-                newDB.UserDetails.Add(newUser);
-                newDB.SaveChanges();
-                successedd = true;
-
-                model.UserID = user.Id;
-                messages.Add("Done");
+                successedd = false;
+                messagess.Add("Bad LastName\r\n");
             }
-            else
+
+            if (!reg.IsMatch(model.FirstName) || (model.FirstName == null))
             {
-                foreach ( var sztring in result.Errors)
+                successedd = false;
+                messagess.Add("Bad FirstName\r\n");
+
+            }
+            if (successedd)
+            {
+                //email address validation
+                var check = newDB.UserDetails.FirstOrDefault(d => d.AspNetUser.Email == model.AspNetUser.Email);
+                if ((check == null) || (check.ID == model.ID)) {
+                    user.LastName = model.LastName;
+                    user.AspNetUser.Email = model.AspNetUser.Email;
+                    user.FirstName = model.FirstName;
+                    user.HireDate = model.HireDate;
+                    user.MaxDays = model.MaxDays;
+                    user.TeamId = model.TeamId;
+                    newDB.SaveChanges();
+                    //get the list of the roles
+                    var list = newDB.Roles.ToList();
+                    //define new role
+                    var name = list.FirstOrDefault(x => x.Id == ManageUserRoleID);
+                    //find user roles
+                    var roles = await UserManager.GetRolesAsync(user.AspNetUser.Id);
+                    //delete user role
+                    await UserManager.RemoveFromRolesAsync(user.UserID, roles.ToArray());
+                    //add new role
+                    await UserManager.AddToRoleAsync(user.AspNetUser.Id, name.Name);
+                }
+                else
                 {
-                    messages.Add(sztring);
+                    successedd = false;
+                    messagess.Add("Bad Email");
                 }
             }
 
+
+            UserDetailsRepository userdr = new UserDetailsRepository();
+            return Json(new { successed = successedd, messages = messagess, userLst = userdr.GetUsers() }, JsonRequestBehavior.DenyGet);
+
+        }
+
+        [HttpPost] //accessible only from HttpPost requests
+        public async Task<ActionResult> CreateUser(UserDetails model, string ManageUserRoleID)
+        {
+
+            bool successedd = true;
+            List<string> messages = new List<string>();
+
+            var user = new ApplicationUser { UserName = model.AspNetUser.Email, Email = model.AspNetUser.Email };
+            UserDetails newUser = new UserDetails
+            {
+                UserID = user.Id,
+                LastName = model.LastName,
+                FirstName = model.FirstName,
+                HireDate = model.HireDate,
+                MaxDays = model.MaxDays,
+                TeamId = model.TeamId
+            };
+            Regex reg = new Regex("^([A-Za-z]+['.]?[ ]?|[A-Za-z]+['-]?)+$", RegexOptions.Compiled);
+            if (!reg.IsMatch(newUser.LastName) || (newUser.LastName=="") || (newUser.LastName == null))
+            {
+                successedd = false;
+                messages.Add("Bad LastName");
+            }
+
+            if (!reg.IsMatch(newUser.FirstName) || (newUser.FirstName == "") || (newUser.FirstName == null))
+            {
+                successedd = false;
+                messages.Add("Bad FirstName\r\n");
+
+            }          
+            HolidayManagementContext newDB = new HolidayManagementContext();          
+            if (successedd)
+            {
+                //action validate email address,
+                var result = await UserManager.CreateAsync(user, "Password1!");
+                if (result.Succeeded)
+                {
+                    //store the new user into the database.
+                    newDB.UserDetails.Add(newUser);
+                    //list roles
+                    var list = newDB.Roles.ToList();
+                    //find our role
+                    var name = list.FirstOrDefault( x => x.Id == ManageUserRoleID);                    
+                    //add new role to user
+                    await UserManager.AddToRoleAsync(user.Id, name.Name);
+                    //commit
+                    newDB.SaveChanges();
+                    successedd = true;
+
+                    model.UserID = user.Id;
+                }
+                else
+                {
+                    //If the email is already taken return a proper error message
+                    foreach (var sztring in result.Errors)
+                    {
+                        messages.Add(sztring);
+                    }
+                    successedd = false;
+                }
+            }
+
+            // JSON response containing 3 properties:
             return Json(new { successed = successedd, messages = messages, newUser = model }, JsonRequestBehavior.DenyGet);
 
         }
+
+
+
+
+
         //
         // POST: /Account/Register
         [HttpPost]
@@ -194,9 +284,15 @@ namespace HolidayManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                //Create a new user and async password with username
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user, model.Password);
+
+                //initiate a new instance of HolidayManagementContext
                 HolidayManagementContext newDB = new HolidayManagementContext();
+                
+                //Change input, store the new information in the UserDetails
                 UserDetails newUser = new UserDetails
                 {
                     UserID = user.Id,
@@ -205,18 +301,24 @@ namespace HolidayManagement.Controllers
 
 
                 };
+                
+                //insert in db
                 newDB.UserDetails.Add(newUser);
+
+                //commit
                 newDB.SaveChanges();
             if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
+                    await UserManager.AddToRoleAsync(user.Id, "Employee");
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
+
+                    //if the register had succes, then go to the dashboard controller index method
                     return RedirectToAction("Index", "Dashboard");
                 }
                 AddErrors(result);

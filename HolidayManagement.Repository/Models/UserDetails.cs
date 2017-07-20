@@ -10,17 +10,17 @@ namespace HolidayManagement.Repository.Models
         [Key]
         public int ID { get; set; }
 
-        public string UserID { get; set; }
+        public string UserID { get; set; } //relevation between UserDetails and AspNetUsers tables
 
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
 
-        public DateTime? HireDate { get; set; }
+        public DateTime? HireDate { get; set; } // ? - not mandatory - nullable - ( nem szukseges )
 
-        public int? MaxDays { get; set; }
+        public int? MaxDays { get; set; } // ? - not mandatory - nullable - ( nem szukseges )
 
-        public int? TeamId { get; set; }
+        public int? TeamId { get; set; } // ? - not mandatory - nullable - ( nem szukseges )
 
 
 
@@ -28,7 +28,7 @@ namespace HolidayManagement.Repository.Models
         public virtual Team Team { get; set; }
 
         [ForeignKey("UserID")]
-        public virtual IdentityUser AspNetUser { get; set; }
+        public virtual IdentityUser AspNetUser { get; set; } //relevation between UserDetails and AspNetUsers tables
 
     }
 }

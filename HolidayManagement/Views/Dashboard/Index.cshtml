@@ -1,4 +1,6 @@
-﻿@model HolidayManagement.Models.DashboardViewModel
+﻿<!-- Create view for dashboard model-->
+
+@model HolidayManagement.Models.DashboardViewModel
 @{
     ViewBag.Title = "Dashboard";
 }
@@ -6,17 +8,21 @@
 <!-- kukac.Model.userL[0].LastName example-->
 
 <h2 style="text-align: center"> Dashboard </h2><br /><br />
+<!--Add a tab control to the Dashboard-->
 <div class="panel panel-body">
+    <!--  #menu -->
         <div class="col-md-3">
             @Html.Partial("_TopMenu")
         </div>
+    <!-- #display -->
     <div class="col-md-9">
         @Html.Partial("_Top2Menu")
     </div>
 </div><!--
 <span data-bind="text: test"></span>-->
 
-<script type="text/javascript" src="~/Scripts/Dashboard/DashboardModel.js"></script>
+
+<!-- invoke Dashboardmodel initialize-->
 <script type="text/javascript">
     InitializeDashboardModel(@Html.Raw(Json.Encode(Model)));
 </script>

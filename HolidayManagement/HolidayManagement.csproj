@@ -210,9 +210,12 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CalendarModel.cs" />
     <Compile Include="Models\DashboardViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\DayModel.cs" />
+    <Compile Include="Models\YearMonthModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -231,9 +234,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Dashboard\CalendarModel.js" />
     <Content Include="Scripts\Dashboard\DashboardModel.js" />
+    <Content Include="Scripts\Dashboard\MonthDaysModel.js" />
+    <Content Include="Scripts\Dashboard\RoleModel.js" />
     <Content Include="Scripts\Dashboard\TeamModel.js" />
     <Content Include="Scripts\Dashboard\UserModel.js" />
+    <Content Include="Scripts\Dashboard\VacationModel.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

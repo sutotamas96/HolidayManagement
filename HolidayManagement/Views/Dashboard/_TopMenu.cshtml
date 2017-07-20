@@ -1,7 +1,11 @@
 ﻿
-    <ul class="list-group" role="tablist">
+<ul class="list-group" role="tablist">
+    @if ((User.IsInRole("Admin")) | (User.IsInRole("HR")))
+    {
         <li class="list-group-item" role="presentation"><a href="#users" aria-controls="users" role="tab" data-toggle="tab" class="btn btn-default btn-block"> Users</a></li>
-        <li class="list-group-item" role="presentation"><a href="#MyCalendar" aria-controls="MyCalendar" role="tab" data-toggle="tab" class="btn btn-success btn-block"> MyCalendar</a></li>
-        <li class="list-group-item" role="presentation"><a href="#groupmanagement" aria-controls="groupmanagement" role="tab" data-toggle="tab" class="btn btn-info btn-block"> GroupManagement</a></li>
-        <li class="list-group-item" role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="btn btn-primary btn-block"> Settings</a></li>
-    </ul>
+    }
+    <li class="list-group-item" role="presentation"><a href="#MyCalendar" aria-controls="MyCalendar" role="tab" data-toggle="tab" class="btn btn-success btn-block"> MyCalendar</a></li>
+    <li class="list-group-item" role="presentation"><a href="#groupmanagement" aria-controls="groupmanagement" role="tab" data-toggle="tab" class="btn btn-info btn-block"> GroupManagement</a></li>
+    <li class="list-group-item" role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab" class="btn btn-primary btn-block"> Settings</a></li>
+</ul>
+
